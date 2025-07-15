@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const ProjectSection = () => {
   const [projects, setProjects] = useState([]);
@@ -14,7 +15,7 @@ const ProjectSection = () => {
   return (
     <section
       id="projects"
-      className="relative min-h-screen w-full flex flex-col items-center justify-center px-4 py-20 text-white bg-fixed bg-cover bg-center"
+      className="relative min-h-screen w-full flex flex-col items-center justify-center px-4 py-20 bg-fixed bg-cover bg-center overflow-hidden text-white"
       style={{
         backgroundImage:
           "url('https://cdn.pixabay.com/photo/2018/03/27/21/43/startup-3267505_960_720.jpg')",
@@ -25,42 +26,90 @@ const ProjectSection = () => {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-7xl text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-white drop-shadow-lg">
+        {/* Animated Heading */}
+        <motion.h2
+          animate={{
+            textShadow: [
+              "0px 0px 0px rgba(255,255,255,0.8)",
+              "0px 0px 15px rgba(0,140,255,0.8)",
+              "0px 0px 0px rgba(255,255,255,0.8)",
+            ],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            repeatType: "mirror",
+          }}
+          className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg"
+        >
           🚀 Our Latest Projects
-        </h2>
+        </motion.h2>
 
-        <p className="text-lg text-gray-300 mb-12 max-w-3xl mx-auto">
-          We take pride in building meaningful digital experiences for businesses and startups. 
-          Our projects reflect creativity, innovation, and strategic thinking tailored for modern brands.
-        </p>
+        {/* Animated Paragraph */}
+        <motion.p
+          animate={{
+            opacity: [1, 0.6, 1],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            repeatType: "loop",
+          }}
+          className="text-lg text-gray-300 mb-12 max-w-3xl mx-auto"
+        >
+          We take pride in building meaningful digital experiences for
+          businesses and startups. Our projects reflect creativity, innovation,
+          and strategic thinking tailored for modern brands.
+        </motion.p>
 
-        {/* Project Cards */}
+        {/* Cards Grid */}
         <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-2">
           {projects.map((proj, index) => (
-            <div
+            <motion.div
               key={index}
-              className="group bg-white bg-opacity-90 rounded-2xl overflow-hidden shadow-xl backdrop-blur-sm transform transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className="group bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 border border-white/10 hover:shadow-blue-500/30"
             >
-              <img
-                src={`${import.meta.env.VITE_API_BASE_URL}/${proj.image}`}
-                alt={proj.name}
-                className="w-full h-52 object-cover rounded-t-2xl group-hover:scale-105 transition-transform duration-500 ease-in-out"
-              />
-              <div className="p-5 text-left">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{proj.name}</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">{proj.description}</p>
-                <button className="mt-4 inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold shadow hover:bg-blue-700 transition duration-300">
-                  Read More
-                </button>
+              <div className="relative overflow-hidden">
+                <img
+                  src={`${import.meta.env.VITE_API_BASE_URL}/${proj.image}`}
+                  alt={proj.name}
+                  className="w-full h-52 object-cover rounded-t-2xl transform group-hover:scale-105 group-hover:brightness-110 transition duration-500"
+                />
               </div>
-            </div>
+
+              <div className="p-5 flex flex-col justify-center items-center text-left">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {proj.name}
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {proj.description}
+                </p>
+
+                <motion.button
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="mt-4 inline-block bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 text-white px-5 py-2 rounded-full font-semibold shadow-md transition duration-300 hover:shadow-lg hover:brightness-110"
+                >
+                  Read More
+                </motion.button>
+              </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Bottom Paragraph */}
-        <p className="mt-5 text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Interested in building something impactful like this? Let’s create your next big idea together.
-        </p>
+        {/* Looping Fade Text */}
+        <motion.p
+          animate={{ opacity: [1, 0.5, 1] }}
+          transition={{ duration: 4, repeat: Infinity }}
+          className="mt-10 text-sm sm:text-base text-gray-300 max-w-2xl mx-auto"
+        >
+          Want to create something powerful like this? Let’s collaborate and
+          build your next success story together.
+        </motion.p>
       </div>
     </section>
   );
